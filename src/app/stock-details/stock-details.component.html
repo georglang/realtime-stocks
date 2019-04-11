@@ -1,3 +1,24 @@
 <p>
   stock-details works!
 </p>
+
+
+------------------------------
+
+Symbol: {{data?.symbol}}
+
+<ul>
+  <li>Symbol {{data?.symbol}}</li>
+  <li>Open {{data?.open}}</li>
+  <li>High {{data?.low}}</li>
+  <li>Price {{data?.price}}</li>
+  <li>Volume {{data?.volume}}</li>
+  <li>Latest Trading Day {{data?.latestTradingDay}}</li>
+  <li>Previous Close {{data?.previousClose}}</li>
+  <li>Change {{data?.change}}</li>
+  <li>Change Percent {{data?.changePercent}}</li>
+</ul>
+
+<button mat-icon-button disabled (click)="addToWatchlist">
+  <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon>
+</button>
