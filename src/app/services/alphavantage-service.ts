@@ -15,7 +15,7 @@ export class AlphavantageService {
 
   constructor(private http: HttpClient) { }
 
-  public getStockByWKN(symbol: string, timeSeries: eTimeSeries) {
+  public getStockBySymbol(symbol: string, timeSeries: eTimeSeries) {
     const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&datatype=json&apikey=${this.API_KEY}`;
 
     return this.http.get<SearchResult[]>(url);
