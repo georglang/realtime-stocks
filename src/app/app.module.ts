@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+
+
 // import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StockListComponent } from './stock-list/stock-list.component';
@@ -30,6 +34,10 @@ import {
   MatDialogModule
 } from '@angular/material';
 
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ServiceWorkerModule } from '@angular/service-worker';
+
+
 const appRoutes = [
   { path: '', component: StockListComponent },
   {
@@ -51,6 +59,7 @@ const appRoutes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     // AppRoutingModule,
     HttpClientModule,
     MatButtonModule,
@@ -61,6 +70,7 @@ const appRoutes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     MatMenuModule,
     MatToolbarModule,
     MatTabsModule,
@@ -68,11 +78,14 @@ const appRoutes = [
     MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    RouterModule.forRoot(appRoutes)
+    FormsModule,
+    RouterModule.forRoot(appRoutes),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [
     AppComponent
   ]
 })
+
 export class AppModule { }
