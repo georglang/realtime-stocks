@@ -3,19 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-
-
-// import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { StockListComponent } from './stock-list/stock-list.component';
-import { HeaderComponent } from './header/header.component';
-import { StockDetailsComponent } from './stock-details/stock-details.component';
-import { WatchlistComponent } from './watchlist/watchlist.component';
-
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { environment } from '../environments/environment';
-import { RouterModule } from '@angular/router';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { CoreModule } from './core/core.module';
 
 // Angular Material
 import {
@@ -34,16 +24,33 @@ import {
   MatDialogModule
 } from '@angular/material';
 
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
+// import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { StockListComponent } from './stock-list/stock-list.component';
+import { HeaderComponent } from './header/header.component';
+import { StockDetailsComponent } from './stock-details/stock-details.component';
+import { WatchlistComponent } from './watchlist/watchlist.component';
+import { MessagingService } from './services/messaging-service/messaging.service';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+
+import { environment } from '../environments/environment';
+import { RouterModule, CanActivate } from '@angular/router';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { AuthGuard } from './auth.guard';
 
 const appRoutes = [
-  { path: '', component: StockListComponent },
+  { path: 'sign-in', component: SignInComponent },
+  { path: '', component: StockListComponent, canActivate: [AuthGuard] },
+  { path: 'stock-list', component: StockListComponent, canActivate: [AuthGuard] },
   {
     path: 'stock-details/:id', component: StockDetailsComponent
   },
   { path: 'watchlist', component: WatchlistComponent },
+
   // * wildcard if the requested URL doesn´t match any path in the URL
   // could also be a 404 page
   // { path: '**', component: StockListComponent, pathMatch: 'full' }
@@ -55,12 +62,13 @@ const appRoutes = [
     StockListComponent,
     HeaderComponent,
     StockDetailsComponent,
-    WatchlistComponent
+    WatchlistComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    // AppRoutingModule,
+    //AppRoutingModule,
     HttpClientModule,
     MatButtonModule,
     MatIconModule,
@@ -76,13 +84,18 @@ const appRoutes = [
     MatTabsModule,
     MatTableModule,
     MatDialogModule,
+    FormsModule,
+    CoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    FormsModule,
+    AngularFireMessagingModule,
     RouterModule.forRoot(appRoutes),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [
+    MessagingService,
+    AuthGuard
+  ],
   bootstrap: [
     AppComponent
   ]
