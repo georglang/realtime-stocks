@@ -21,8 +21,6 @@ export class StockListComponent implements OnInit {
 
   // search stock by name or WKN
   private searchStock(symbol: string) {
-    debugger;
-
     this.alphavantageService.GetSearch(symbol).subscribe((data: any) => {
       this.searchResult = data.bestMatches;
 
@@ -46,13 +44,11 @@ export class StockListComponent implements OnInit {
   }
 
   public onClickSearchButton(value) {
-    debugger;
-
     this.searchStock(value);
   }
 
   public navigateToStockDetails(row) {
-    this.router.navigate(['./stock-details/' + row.symbol]);
+    this.router.navigate(['./stock-details/' + row.symbol, {name: row.name}]);
   }
 
 }
