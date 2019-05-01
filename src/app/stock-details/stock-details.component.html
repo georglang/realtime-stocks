@@ -2,10 +2,11 @@
   <div class="col-md-6">
     <h4>Aktie Daten</h4>
     <ul>
-      <li>Symbol {{data?.symbol}}</li>
-      <li>Open {{data?.open}}</li>
-      <li>High {{data?.low}}</li>
-      <li>Price {{data?.price}}</li>
+      <li>Name:  {{name}}</li>
+      <li>Symbol:  {{data?.symbol}}</li>
+      <li>Open:  {{data?.open}}</li>
+      <li>High:  {{data?.low}}</li>
+      <li>Price:  {{data?.price}}</li>
       <li>Volume {{data?.volume}}</li>
       <li>Latest Trading Day {{data?.latestTradingDay}}</li>
       <li>Previous Close {{data?.previousClose}}</li>
@@ -31,7 +32,7 @@
         <input matInput placeholder="Unteres Limit" id="limitLow" name="limitLow" ngModel>
       </mat-form-field>
       <br>
-      <mat-checkbox name="useLimitLow" [ngModel]="myModel">
+      <mat-checkbox name="useLimitLow" id="useLimitLow" ngModel>
         <label>Unteres Limit verwenden</label>
       </mat-checkbox>
 
