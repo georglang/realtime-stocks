@@ -41,15 +41,24 @@ import { environment } from '../environments/environment';
 import { RouterModule, CanActivate } from '@angular/router';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { AuthGuard } from './auth.guard';
+import { SearchComponent } from './search/search.component';
+import { ToastrModule } from 'ngx-toastr';
+
 
 const appRoutes = [
   { path: 'sign-in', component: SignInComponent },
-  { path: '', component: StockListComponent, canActivate: [AuthGuard] },
-  { path: 'stock-list', component: StockListComponent, canActivate: [AuthGuard] },
+  { path: 'watchlist', component: WatchlistComponent, canActivate: [AuthGuard] },
+  {
+    path: 'search', component: SearchComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: 'stocklist', component: StockListComponent, canActivate: [AuthGuard]
+  },
   {
     path: 'stock-details/:id', component: StockDetailsComponent
   },
-  { path: 'watchlist', component: WatchlistComponent },
+  { path: '', component: WatchlistComponent, canActivate: [AuthGuard] },
+  // { path: 'watchlist', component: WatchlistComponent },
 
   // * wildcard if the requested URL doesn´t match any path in the URL
   // could also be a 404 page
@@ -63,7 +72,8 @@ const appRoutes = [
     HeaderComponent,
     StockDetailsComponent,
     WatchlistComponent,
-    SignInComponent
+    SignInComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +100,11 @@ const appRoutes = [
     AngularFirestoreModule,
     AngularFireMessagingModule,
     RouterModule.forRoot(appRoutes),
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
