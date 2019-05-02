@@ -43,6 +43,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { AuthGuard } from './auth.guard';
 import { SearchComponent } from './search/search.component';
 import { ToastrModule } from 'ngx-toastr';
+import { AddToWatchlistComponent } from './add-to-watchlist/add-to-watchlist.component';
 
 
 const appRoutes = [
@@ -73,7 +74,8 @@ const appRoutes = [
     StockDetailsComponent,
     WatchlistComponent,
     SignInComponent,
-    SearchComponent
+    SearchComponent,
+    AddToWatchlistComponent
   ],
   imports: [
     BrowserModule,
