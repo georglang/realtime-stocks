@@ -51,7 +51,7 @@ export class AuthService {
 
     return userRef.set(data, { merge: true })
       .then((data) => {
-        this.router.navigate(['./stock-list/']);
+        this.router.navigate(['./watchlist/']);
       })
 
   }
