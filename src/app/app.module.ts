@@ -49,6 +49,7 @@ import { AddToWatchlistComponent } from './add-to-watchlist/add-to-watchlist.com
 const appRoutes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'watchlist', component: WatchlistComponent, canActivate: [AuthGuard] },
+  { path: 'add-to-watchlist/:id', component: AddToWatchlistComponent, canActivate: [AuthGuard] },
   {
     path: 'search', component: SearchComponent, canActivate: [AuthGuard]
   },
