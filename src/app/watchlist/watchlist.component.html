@@ -3,6 +3,7 @@
     <h4>Aktien in Watchlist</h4>
   </div>
   <div id="watchlist-content">
+
     <table id="watchlist-table" matSort mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="name">
         <th mat-sort-header mat-header-cell *matHeaderCellDef>Name</th>
@@ -39,6 +40,31 @@
     </table>
   </div>
 </div>
+
+
+
+<div id="limit-reached-stocks">
+  <h4>Limit erreicht</h4>
+  <table id="limit-reached-table" matSort mat-table [dataSource]="dataSourceLimitReached">
+    <ng-container matColumnDef="symbol">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>WKN</th>
+      <td mat-cell *matCellDef="let stock">{{stock.symbol}}</td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>Preis</th>
+      <td mat-cell *matCellDef="let stock">{{stock.symbol}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="changePercent">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>Änderung Prozentual</th>
+      <td mat-cell *matCellDef="let stock">{{stock.changePercent}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsLimitReached"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsLimitReached"></tr>
+  </table>
+</div>
+
 <div id="bottom-nav">
   <button routerLink="/search" type="button" id="add-to-watchlist-btn" type="submit" mat-fab class="float-right">
     <i class="material-icons">add</i>
