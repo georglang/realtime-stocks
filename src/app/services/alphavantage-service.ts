@@ -15,9 +15,8 @@ export class AlphavantageService {
 
   constructor(private http: HttpClient) { }
 
-  public getStockBySymbol(symbol: string, timeSeries: eTimeSeries) {
+  public getStockBySymbol(symbol: string) {
     const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&datatype=json&apikey=${this.API_KEY}`;
-
     return this.http.get<SearchResult[]>(url);
   }
 
@@ -39,7 +38,6 @@ export class AlphavantageService {
   //     }));
   // }
 
-  // https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo
 
   GetSearch(searchQuery: string): Observable<any> {
     const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchQuery}&apikey=${this.API_KEY}`;
