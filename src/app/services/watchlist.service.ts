@@ -21,12 +21,12 @@ export class WatchlistService {
     this.watchlistCollection = this.firestore.collection<IStockInWatchlist>('Watchlist');
   }
 
-  public getWatchlist(): Promise<IStockInWatchlist[]> {
+  public getWatchlist(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       return this.watchlistCollection
         .snapshotChanges()
         .pipe(map(actions => actions.map(this.documentToDomainObject)))
-        .subscribe((stocks: IStockInWatchlist[]) => {
+        .subscribe((stocks: any[]) => {
           resolve(stocks);
         });
     });
@@ -38,12 +38,7 @@ export class WatchlistService {
     return object;
   };
 
-  public getStockByWKN(symbol: string, timeSeries: eTimeSeries) {
-    return this.alphavantageService.getStockBySymbol(symbol, timeSeries);
-  }
-
   public add(stock: IStockInWatchlist): Promise<any> {
-
     const _stock = JSON.parse(JSON.stringify(stock));
     return this.watchlistCollection
       .add(_stock)
