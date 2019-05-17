@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth-service/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { IUser } from '../interfaces/IUser';
 
 @Component({
   selector: 'app-sign-in',
@@ -8,14 +9,16 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  private returnUrl: string;
-
   constructor(
     public authService: AuthService,
-    private route: ActivatedRoute
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.authService.user$.subscribe((user: IUser) => {
+      console.log('User', user);
+      this.router.navigate(['./watchlist']);
+    })
   }
 
 }
