@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireMessaging } from '@angular/fire/messaging';
-import { mergeMapTo } from 'rxjs/operators';
-import { take, map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { User } from './../../interfaces/IUser';
 
@@ -11,12 +8,9 @@ import { User } from './../../interfaces/IUser';
   providedIn: 'root'
 })
 export class MessagingService {
-  private valueChanged = false;
-
   currentMessage = new BehaviorSubject(null);
 
   constructor(
-    private angularFireAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private angularFireMessaging: AngularFireMessaging) {
     this.angularFireMessaging.messaging.subscribe(
@@ -30,16 +24,13 @@ export class MessagingService {
   // update token in firebase database
   updateToken(user, token) {
     let tokensInFirebase = [];
-    this.valueChanged = false;
     let isTokenAlreadyInFb = false;
 
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
 
-
-    userRef
+    return userRef
       .valueChanges()
       .subscribe((data) => {
-        debugger;
         if (data !== undefined) {
           console.log('Subscribe Value Changed');
           if (data.fcmTokens.length > 0) {
@@ -53,7 +44,6 @@ export class MessagingService {
               tokensInFirebase.push(token);
               this.callTest(user, userRef, tokensInFirebase)
             }
-
           }
         } else {
           tokensInFirebase.push(token);
