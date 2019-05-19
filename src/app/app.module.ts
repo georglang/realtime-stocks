@@ -35,6 +35,7 @@ import { MessagingService } from './services/messaging-service/messaging.service
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 
 import { environment } from '../environments/environment';
@@ -44,6 +45,8 @@ import { AuthGuard } from './auth.guard';
 import { SearchComponent } from './search/search.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AddToWatchlistComponent } from './add-to-watchlist/add-to-watchlist.component';
+import { AuthService } from './core/auth-service/auth.service';
+import { ConfirmDeleteDialogComponent } from './confirm-delete/confirm-delete-dialog.component';
 
 
 const appRoutes = [
@@ -76,7 +79,9 @@ const appRoutes = [
     WatchlistComponent,
     SignInComponent,
     SearchComponent,
-    AddToWatchlistComponent
+    AddToWatchlistComponent,
+    ConfirmDeleteDialogComponent
+
   ],
   imports: [
     BrowserModule,
@@ -101,6 +106,9 @@ const appRoutes = [
     CoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireMessagingModule,
+    RouterModule.forRoot(appRoutes),
     AngularFireMessagingModule,
     RouterModule.forRoot(appRoutes),
     ToastrModule.forRoot({
