@@ -2,11 +2,11 @@
   <div class="col-md-6">
     <h4>Aktie Daten</h4>
     <ul>
-      <li>Name:  {{name}}</li>
-      <li>Symbol:  {{data?.symbol}}</li>
-      <li>Open:  {{data?.open}}</li>
-      <li>High:  {{data?.low}}</li>
-      <li>Price:  {{data?.price}}</li>
+      <li>Name: {{name}}</li>
+      <li>Symbol: {{data?.symbol}}</li>
+      <li>Open: {{data?.open}}</li>
+      <li>High: {{data?.low}}</li>
+      <li>Price: {{data?.price}}</li>
       <li>Volume {{data?.volume}}</li>
       <li>Latest Trading Day {{data?.latestTradingDay}}</li>
       <li>Previous Close {{data?.previousClose}}</li>
@@ -20,28 +20,6 @@
   </div>
 
 </div>
-<div id="add-to-watchlist-container" class="row">
-  <div class="col-md-6">
-    <h4>Zu Watchliste hinzufügen</h4>
-    <form id="add-to-watchlist-form" #addToWarchlistForm="ngForm" (ngSubmit)="onSubmit(addToWarchlistForm.value)">
-      <mat-form-field>
-        <input matInput placeholder="Oberes Limit" id="limitHigh" name="limitHigh" ngModel>
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput placeholder="Unteres Limit" id="limitLow" name="limitLow" ngModel>
-      </mat-form-field>
-      <br>
-      <mat-checkbox name="useLimitLow" id="useLimitLow" ngModel>
-        <label>Unteres Limit verwenden</label>
-      </mat-checkbox>
-
-      <p>
-        <button type="submit" mat-raised-button>Hinzufügen</button>
-      </p>
-    </form>
-  </div>
-
-
+<div id="bottom-nav">
 
 </div>
