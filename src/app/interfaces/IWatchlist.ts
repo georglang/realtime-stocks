@@ -1,4 +1,4 @@
-export interface Watchlist {
+export interface IWatchlist {
   currency: string;
   name: string;
   symbol: string;
