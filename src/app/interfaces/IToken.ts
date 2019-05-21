@@ -1,4 +1,4 @@
-export interface IToken {
+ export interface IToken {
   id: string;
   token: string;
 }
