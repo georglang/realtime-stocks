@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IStockInWatchlist } from '../interfaces/IStockWatchlist';
 import { MatTableDataSource, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
+
+
 import { WatchlistService } from '../services/watchlist.service';
 import { Router } from '@angular/router';
 import { ILimitReachedStock } from '../interfaces/ILimitReachedStock';
