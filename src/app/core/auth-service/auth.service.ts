@@ -3,11 +3,14 @@ import { Router } from '@angular/router';
 
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { IUser } from '../../interfaces/IUser';
+
+import { IUser } from './../../interfaces/IUser';
+import { MessagingService } from '../../services/messaging-service/messaging.service';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,15 +19,16 @@ export class AuthService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private angularFirestore: AngularFirestore,
-    private router: Router
+    private afs: AngularFirestore,
+    private router: Router,
+    private messagingService: MessagingService
   ) {
     // Get the auth state, then fetch the Firestore user document or return null
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
         // Logged in
         if (user) {
-          return this.angularFirestore.doc<IUser>(`users/${user.uid}`).valueChanges();
+          return this.afs.doc<IUser>(`users/${user.uid}`).valueChanges();
         } else {
           // Logged out
           return of(null);
@@ -40,27 +44,13 @@ export class AuthService {
   }
 
   private updateUserData(user) {
-    // Sets user data to firestore on login
-    const userRef: AngularFirestoreDocument<IUser> = this.angularFirestore.doc(`users/${user.uid}`);
-    localStorage.setItem('id', user.uid);
-    const data: IUser = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName
-    }
-
-    return userRef.set(data, { merge: true })
-      .then((data) => {
-        this.router.navigate(['./watchlist/']);
-      })
-
+    return this.messagingService.requestPermission(user)
   }
+
 
   async signOut() {
-    await this.afAuth.auth.signOut()
-      .then(() => {
-        localStorage.clear();
-      });
+    await this.afAuth.auth.signOut();
     this.router.navigate(['/']);
   }
+
 }
