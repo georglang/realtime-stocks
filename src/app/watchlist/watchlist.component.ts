@@ -17,7 +17,7 @@ import { ConfirmDeleteDialogComponent } from '../confirm-delete/confirm-delete-d
 export class WatchlistComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns = ['name', 'symbol', 'currency', 'LH', 'LL', 'ULL', 'delete'];
-  public displayedColumnsLimitReached = ['symbol', 'price', 'changePercent'];
+  public displayedColumnsLimitReached = ['name', 'symbol', 'price', 'changePercent', 'delete'];
 
   public dataSource: MatTableDataSource<IStockInWatchlist>;
   public dataSourceLimitReached: MatTableDataSource<ILimitReachedStock>
@@ -46,9 +46,16 @@ export class WatchlistComponent implements OnInit {
       });
   }
 
-  public deleteStock(stockId) {
+  public deleteStockInWatchlistCollection(stockId) {
     // this.openDeleteRecordDialog(recordId);
-    this.firestoreService.deleteStockInWatchlist(stockId)
+    this.firestoreService.deleteStockInWatchlistCollection(stockId)
+      .then(() => {
+
+      })
+  }
+
+  public deleteStockInLimitReachedCollection(stockId) {
+    this.firestoreService.deleteStockInLimitReachedCollection(stockId)
       .then(() => {
 
       })

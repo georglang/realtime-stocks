@@ -15,17 +15,17 @@
       </ng-container>
 
       <ng-container matColumnDef="currency">
-        <th mat-sort-header mat-header-cell *matHeaderCellDef>Währung</th>
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>€</th>
         <td mat-cell *matCellDef="let stock">{{stock.currency}}</td>
       </ng-container>
 
       <ng-container matColumnDef="LH">
-        <th mat-sort-header mat-header-cell *matHeaderCellDef>Oberes Limit</th>
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>OL</th>
         <td mat-cell *matCellDef="let stock">{{stock.limitHigh}}</td>
       </ng-container>
 
       <ng-container matColumnDef="LL">
-        <th mat-sort-header mat-header-cell *matHeaderCellDef>Unteres Limit</th>
+        <th mat-sort-header mat-header-cell *matHeaderCellDef>UL</th>
         <td mat-cell *matCellDef="let stock">{{stock.limitLow}}</td>
 
       </ng-container>
@@ -39,13 +39,13 @@
 
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            <div id="delete-btn-wrapper">
-              <button mat-icon-button (click)="deleteStock(element.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </mat-cell>
+        <mat-cell *matCellDef="let element">
+          <div id="delete-btn-wrapper">
+            <button mat-icon-button (click)="deleteStockInWatchlistCollection(element.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-cell>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -59,18 +59,33 @@
 <div id="limit-reached-stocks">
   <h4>Limit erreicht</h4>
   <table id="limit-reached-table" matSort mat-table [dataSource]="dataSourceLimitReached">
+    <ng-container matColumnDef="name">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let stock">{{stock.name}}</td>
+    </ng-container>
     <ng-container matColumnDef="symbol">
       <th mat-sort-header mat-header-cell *matHeaderCellDef>WKN</th>
       <td mat-cell *matCellDef="let stock">{{stock.symbol}}</td>
     </ng-container>
     <ng-container matColumnDef="price">
       <th mat-sort-header mat-header-cell *matHeaderCellDef>Preis</th>
-      <td mat-cell *matCellDef="let stock">{{stock.symbol}}</td>
+      <td mat-cell *matCellDef="let stock">{{stock.price}}</td>
     </ng-container>
 
     <ng-container matColumnDef="changePercent">
-      <th mat-sort-header mat-header-cell *matHeaderCellDef>Änderung Prozentual</th>
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>Prozentual</th>
       <td mat-cell *matCellDef="let stock">{{stock.changePercent}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <div id="delete-btn-wrapper">
+          <button mat-icon-button (click)="deleteStockInLimitReachedCollection(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-cell>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumnsLimitReached"></tr>
