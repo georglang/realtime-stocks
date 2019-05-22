@@ -51,8 +51,17 @@ export class FirestoreService {
     return object;
   };
 
-  deleteStockInWatchlist(stockId: string) {
+  deleteStockInWatchlistCollection(stockId: string) {
     return this.watchlistCollection
+      .doc(stockId)
+      .delete()
+      .then(data => {
+        return data;
+      });
+  }
+
+  deleteStockInLimitReachedCollection(stockId: string) {
+    return this.limitReachedCollection
       .doc(stockId)
       .delete()
       .then(data => {
