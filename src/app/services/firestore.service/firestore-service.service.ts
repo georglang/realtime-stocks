@@ -34,13 +34,13 @@ export class FirestoreService {
       });
   }
 
-  public getLimitReachedCollection(): Promise<any[]> {
+  public getLimitReachedCollection(): Promise<ILimitReachedStock[]> {
     return new Promise((resolve, reject) => {
       return this.limitReachedCollection
         .snapshotChanges()
         .pipe(map(actions => actions.map(this.documentToDomainObject)))
-        .subscribe((stocks: any[]) => {
-          resolve(stocks);
+        .subscribe((stocksLimitReached: ILimitReachedStock[]) => {
+          resolve(stocksLimitReached);
         });
     });
   }
@@ -65,6 +65,7 @@ export class FirestoreService {
       .doc(stockId)
       .delete()
       .then(data => {
+        debugger;
         return data;
       });
   }
