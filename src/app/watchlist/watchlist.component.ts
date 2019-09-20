@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatTableDataSource, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete/confirm-delete-dialog.component';
 import { FirestoreService } from '../services/firestore.service/firestore-service.service';
@@ -24,7 +23,6 @@ export class WatchlistComponent implements OnInit {
 
   constructor(
     private watchlistService: WatchlistService,
-    private router: Router,
     private firestoreService: FirestoreService,
     public dialog: MatDialog
   ) { }
@@ -34,7 +32,7 @@ export class WatchlistComponent implements OnInit {
     this.getStocksLimitReached();
   }
 
-  public getStocksInWatchlist() {
+  public getStocksInWatchlist(): void {
     this.watchlistService.getWatchlist()
       .then((stocks: IStockInWatchlist[]) => {
         this.stocksInWatchlist = stocks;
@@ -43,34 +41,39 @@ export class WatchlistComponent implements OnInit {
       });
   }
 
-  public getStocksLimitReached() {
+  public getStocksLimitReached(): void {
     this.firestoreService.getLimitReachedCollection()
       .then((stocks: any) => {
         this.stocksLimitReached = stocks;
         this.dataSourceLimitReached = new MatTableDataSource(this.stocksLimitReached);
+        this.dataSourceLimitReached.sort = this.sort;
       });
   }
 
-  public deleteStockInWatchlistCollection(stockId) {
+  public deleteStockInWatchlistCollection(firestoreId: string, symbol: string): void {
     // this.openDeleteRecordDialog(recordId);
-    this.firestoreService.deleteStockInWatchlistCollection(stockId)
-      .then(() => {
-
-      })
-  }
-
-  public deleteStockInLimitReachedCollection(id: string, symbol: string) {
-    this.firestoreService.deleteStockInLimitReachedCollection(id)
+    this.firestoreService.deleteStockInWatchlistCollection(firestoreId)
       .then((data) => {
-        if (this.stocksLimitReached.length > 0) {
-          debugger;
+        if (this.stocksInWatchlist.length > 0) {
           const stocksLimitReached = this.stocksLimitReached.filter(stock => stock.symbol !== symbol);
           this.dataSourceLimitReached = new MatTableDataSource(stocksLimitReached);
+          this.dataSourceLimitReached.sort = this.sort;
         }
       });
   }
 
-  public openDeleteRecordDialog(stockId) {
+  public deleteStockInLimitReachedCollection(firestoreId: string, symbol: string): void {
+    this.firestoreService.deleteStockInLimitReachedCollection(firestoreId)
+      .then((data) => {
+        if (this.stocksLimitReached.length > 0) {
+          const stocksLimitReached = this.stocksLimitReached.filter(stock => stock.symbol !== symbol);
+          this.dataSourceLimitReached = new MatTableDataSource(stocksLimitReached);
+          this.dataSourceLimitReached.sort = this.sort;
+        }
+      });
+  }
+
+  public openDeleteRecordDialog(stockId): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
