@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IStockInWatchlist } from '../interfaces/IStockWatchlist';
-import { MatTableDataSource, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
-
-
-import { WatchlistService } from '../services/watchlist.service';
 import { Router } from '@angular/router';
-import { ILimitReachedStock } from '../interfaces/ILimitReachedStock';
-import { FirestoreService } from '../services/firestore.service/firestore-service.service';
+import { MatTableDataSource, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
 import { ConfirmDeleteDialogComponent } from '../confirm-delete/confirm-delete-dialog.component';
+import { FirestoreService } from '../services/firestore.service/firestore-service.service';
+import { WatchlistService } from '../services/watchlist.service';
+import { IStockInWatchlist } from '../interfaces/IStockWatchlist';
+import { ILimitReachedStock } from '../interfaces/ILimitReachedStock';
 
 @Component({
   selector: 'app-watchlist',
@@ -19,6 +17,8 @@ export class WatchlistComponent implements OnInit {
   public displayedColumns = ['name', 'symbol', 'currency', 'LH', 'LL', 'ULL', 'delete'];
   public displayedColumnsLimitReached = ['name', 'symbol', 'price', 'changePercent', 'delete'];
 
+  private stocksInWatchlist: IStockInWatchlist[];
+  private stocksLimitReached: ILimitReachedStock[];
   public dataSource: MatTableDataSource<IStockInWatchlist>;
   public dataSourceLimitReached: MatTableDataSource<ILimitReachedStock>
 
@@ -31,18 +31,23 @@ export class WatchlistComponent implements OnInit {
 
   ngOnInit() {
     this.getStocksInWatchlist();
-
-    this.firestoreService.getLimitReachedCollection()
-      .then(stocks => {
-        this.dataSourceLimitReached = new MatTableDataSource(stocks);
-      });
+    this.getStocksLimitReached();
   }
 
   public getStocksInWatchlist() {
     this.watchlistService.getWatchlist()
       .then((stocks: IStockInWatchlist[]) => {
-        this.dataSource = new MatTableDataSource(stocks);
+        this.stocksInWatchlist = stocks;
+        this.dataSource = new MatTableDataSource(this.stocksInWatchlist);
         this.dataSource.sort = this.sort;
+      });
+  }
+
+  public getStocksLimitReached() {
+    this.firestoreService.getLimitReachedCollection()
+      .then((stocks: any) => {
+        this.stocksLimitReached = stocks;
+        this.dataSourceLimitReached = new MatTableDataSource(this.stocksLimitReached);
       });
   }
 
@@ -54,11 +59,15 @@ export class WatchlistComponent implements OnInit {
       })
   }
 
-  public deleteStockInLimitReachedCollection(stockId) {
-    this.firestoreService.deleteStockInLimitReachedCollection(stockId)
-      .then(() => {
-
-      })
+  public deleteStockInLimitReachedCollection(id: string, symbol: string) {
+    this.firestoreService.deleteStockInLimitReachedCollection(id)
+      .then((data) => {
+        if (this.stocksLimitReached.length > 0) {
+          debugger;
+          const stocksLimitReached = this.stocksLimitReached.filter(stock => stock.symbol !== symbol);
+          this.dataSourceLimitReached = new MatTableDataSource(stocksLimitReached);
+        }
+      });
   }
 
   public openDeleteRecordDialog(stockId) {
