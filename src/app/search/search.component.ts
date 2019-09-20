@@ -21,12 +21,13 @@ export class SearchComponent implements OnInit {
     private watchlistService: WatchlistService,
     private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   // search stock by name or WKN
   private searchStock(symbol: string) {
     this.alphavantageService.GetSearch(symbol).subscribe((data: any) => {
       this.searchResult = data.bestMatches;
+
 
       this.searchResult.forEach(element => {
         const newElement = {
@@ -49,6 +50,6 @@ export class SearchComponent implements OnInit {
   }
 
   public navigateToStockDetails(row) {
-    this.router.navigate(['./stock-details/' + row.symbol, {name: row.name, curr: row.currency}]);
+    this.router.navigate(['./add-to-watchlist/' + row.symbol, { name: row.name, curr: row.currency }]);
   }
 }
