@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { CoreModule } from './core/core.module';
 
 // Angular Material
 import {
@@ -27,7 +26,6 @@ import {
 
 // import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StockListComponent } from './stock-list/stock-list.component';
 import { HeaderComponent } from './header/header.component';
 import { StockDetailsComponent } from './stock-details/stock-details.component';
 import { WatchlistComponent } from './watchlist/watchlist.component';
@@ -57,9 +55,6 @@ const appRoutes = [
     path: 'search', component: SearchComponent, canActivate: [AuthGuard]
   },
   {
-    path: 'stocklist', component: StockListComponent, canActivate: [AuthGuard]
-  },
-  {
     path: 'stock-details/:id', component: StockDetailsComponent
   },
   { path: '', component: WatchlistComponent, canActivate: [AuthGuard] },
@@ -73,7 +68,6 @@ const appRoutes = [
 @NgModule({
   declarations: [
     AppComponent,
-    StockListComponent,
     HeaderComponent,
     StockDetailsComponent,
     WatchlistComponent,
@@ -103,7 +97,6 @@ const appRoutes = [
     MatTableModule,
     MatDialogModule,
     FormsModule,
-    CoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
