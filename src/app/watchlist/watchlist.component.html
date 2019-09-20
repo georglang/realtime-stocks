@@ -39,9 +39,9 @@
 
       <ng-container matColumnDef="delete">
         <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <mat-cell *matCellDef="let stock">
           <div id="delete-btn-wrapper">
-            <button mat-icon-button (click)="deleteStockInWatchlistCollection(element.id)">
+            <button mat-icon-button (click)="deleteStockInWatchlistCollection(stock.id, stock.symbol)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
