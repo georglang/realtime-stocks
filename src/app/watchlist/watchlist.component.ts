@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort, MatDialog, MatDialogConfig } from '@angular/material';
-import { ConfirmDeleteDialogComponent } from '../confirm-delete/confirm-delete-dialog.component';
+import { ConfirmDeleteDialogComponent } from '../confirm-delete-dialog/confirm-delete-dialog.component';
 import { FirestoreService } from '../services/firestore.service/firestore-service.service';
 import { WatchlistService } from '../services/watchlist.service';
 import { IStockInWatchlist } from '../interfaces/IStockWatchlist';
@@ -51,15 +51,7 @@ export class WatchlistComponent implements OnInit {
   }
 
   public deleteStockInWatchlistCollection(firestoreId: string, symbol: string): void {
-    // this.openDeleteRecordDialog(recordId);
-    this.firestoreService.deleteStockInWatchlistCollection(firestoreId)
-      .then((data) => {
-        if (this.stocksInWatchlist.length > 0) {
-          const stocksInWatchlist = this.stocksInWatchlist.filter(stock => stock.symbol !== symbol);
-          this.dataSource = new MatTableDataSource(stocksInWatchlist);
-          this.dataSourceLimitReached.sort = this.sort;
-        }
-      });
+    this.openDeleteFromWatchlistDialog(firestoreId, symbol);
   }
 
   public deleteStockInLimitReachedCollection(firestoreId: string, symbol: string): void {
@@ -73,27 +65,25 @@ export class WatchlistComponent implements OnInit {
       });
   }
 
-  public openDeleteRecordDialog(stockId): void {
+  public openDeleteFromWatchlistDialog(firestoreId: string, symbol: string): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      id: 1,
-      title: 'Löschen'
-    };
+    dialogConfig.height = '110px';
+    dialogConfig.width = '400px';
+
     const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // this.firestoreService.deleteStockInWatchlist().then(data => {
-        //   // load records after deletion
-        //   this.getRecords(this.paramId);
-        //   // delete record in indexedDB orders table
-        //   this.indexDbService.deleteRecordInOrdersTable(this.paramId, _recordId).then(() => {
-        //     this.messageService.recordDeletedSuccessful();
-        //   });
-        // });
+    dialogRef.afterClosed().subscribe(dialogRef => {
+      if (dialogRef.data) {
+        this.firestoreService.deleteStockInWatchlistCollection(firestoreId)
+          .then((data) => {
+            if (this.stocksInWatchlist.length > 0) {
+              const stocksInWatchlist = this.stocksInWatchlist.filter(stock => stock.symbol !== symbol);
+              this.dataSource = new MatTableDataSource(stocksInWatchlist);
+              this.dataSourceLimitReached.sort = this.sort;
+            }
+          });
       }
     });
   }
-
 }
