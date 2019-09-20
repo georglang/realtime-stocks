@@ -55,8 +55,8 @@ export class WatchlistComponent implements OnInit {
     this.firestoreService.deleteStockInWatchlistCollection(firestoreId)
       .then((data) => {
         if (this.stocksInWatchlist.length > 0) {
-          const stocksLimitReached = this.stocksLimitReached.filter(stock => stock.symbol !== symbol);
-          this.dataSourceLimitReached = new MatTableDataSource(stocksLimitReached);
+          const stocksInWatchlist = this.stocksInWatchlist.filter(stock => stock.symbol !== symbol);
+          this.dataSource = new MatTableDataSource(stocksInWatchlist);
           this.dataSourceLimitReached.sort = this.sort;
         }
       });
