@@ -51,18 +51,18 @@ export class FirestoreService {
     return object;
   };
 
-  deleteStockInWatchlistCollection(stockId: string) {
+  deleteStockInWatchlistCollection(firestoreId: string) {
     return this.watchlistCollection
-      .doc(stockId)
+      .doc(firestoreId)
       .delete()
       .then(data => {
         return data;
       });
   }
 
-  deleteStockInLimitReachedCollection(stockId: string) {
+  deleteStockInLimitReachedCollection(firestoreId: string) {
     return this.limitReachedCollection
-      .doc(stockId)
+      .doc(firestoreId)
       .delete()
       .then(data => {
         debugger;
