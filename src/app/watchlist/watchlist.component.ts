@@ -51,21 +51,14 @@ export class WatchlistComponent implements OnInit {
   }
 
   public deleteStockInWatchlistCollection(firestoreId: string, symbol: string): void {
-    this.openDeleteFromWatchlistDialog(firestoreId, symbol);
+    this.openDeleteDialog(firestoreId, symbol, true);
   }
 
   public deleteStockInLimitReachedCollection(firestoreId: string, symbol: string): void {
-    this.firestoreService.deleteStockInLimitReachedCollection(firestoreId)
-      .then((data) => {
-        if (this.stocksLimitReached.length > 0) {
-          const stocksLimitReached = this.stocksLimitReached.filter(stock => stock.symbol !== symbol);
-          this.dataSourceLimitReached = new MatTableDataSource(stocksLimitReached);
-          this.dataSourceLimitReached.sort = this.sort;
-        }
-      });
+    this.openDeleteDialog(firestoreId, symbol, false);
   }
 
-  public openDeleteFromWatchlistDialog(firestoreId: string, symbol: string): void {
+  public openDeleteDialog(firestoreId: string, symbol: string, shouldDeleteFromWatchlist: boolean): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -75,14 +68,25 @@ export class WatchlistComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(dialogRef => {
       if (dialogRef.data) {
-        this.firestoreService.deleteStockInWatchlistCollection(firestoreId)
-          .then((data) => {
-            if (this.stocksInWatchlist.length > 0) {
-              const stocksInWatchlist = this.stocksInWatchlist.filter(stock => stock.symbol !== symbol);
-              this.dataSource = new MatTableDataSource(stocksInWatchlist);
-              this.dataSourceLimitReached.sort = this.sort;
-            }
-          });
+        if (shouldDeleteFromWatchlist) {
+          this.firestoreService.deleteStockInWatchlistCollection(firestoreId)
+            .then((data) => {
+              if (this.stocksInWatchlist.length > 0) {
+                const stocksInWatchlist = this.stocksInWatchlist.filter(stock => stock.symbol !== symbol);
+                this.dataSource = new MatTableDataSource(stocksInWatchlist);
+                this.dataSourceLimitReached.sort = this.sort;
+              }
+            });
+        } else {
+          this.firestoreService.deleteStockInLimitReachedCollection(firestoreId)
+            .then((data) => {
+              if (this.stocksLimitReached.length > 0) {
+                const stocksLimitReached = this.stocksLimitReached.filter(stock => stock.symbol !== symbol);
+                this.dataSourceLimitReached = new MatTableDataSource(stocksLimitReached);
+                this.dataSourceLimitReached.sort = this.sort;
+              }
+            });
+        }
       }
     });
   }
